@@ -1,0 +1,29 @@
+#include <iostream>
+
+using namespace std;
+
+void printArray(int a[], int length) {
+    for (int i = 0; i < length; i++) {
+        cout << a[i];
+    }
+    cout << endl;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int a[n];
+    for (int i = 0; i < n; i++) cin >> a[i];
+    int b[n];
+    for (int i = 0; i < n; i++) cin >> b[i];
+    int c[n + 1];
+    int temp = 0;
+    for (int i = n; i > 0; i--) {
+        int d = a[i - 1] + b[i - 1] + temp;
+        temp = d / 2;
+        c[i] = d % 2;
+    }
+    c[0] = temp;
+    printArray(c, n + 1);
+    return 0;
+}
