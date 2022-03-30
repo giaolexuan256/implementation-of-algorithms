@@ -1,0 +1,59 @@
+#include <iostream>
+
+using namespace std;
+
+struct Subarray {
+    int low, high;
+    int sum;
+};
+
+Subarray findMaxCrossingSubarray(int a[], int low, int mid, int high) {
+    int n = mid;
+    int left = mid;
+    int leftSum = 0;
+    int maxLeftSum = -10000;
+    while (n >= low) {
+        leftSum += a[n];
+        if (leftSum > maxLeftSum) {
+            maxLeftSum = leftSum;
+            left = n;
+        }
+        n--;
+    }
+
+    n = mid;
+    int right = mid;
+    int rightSum = 0;
+    int maxRightSum = -10000;
+    while (n <= high) {
+        rightSum += a[n];
+        if (rightSum > maxRightSum) {
+            maxRightSum = rightSum;
+            right = n;
+        }
+        n++;
+    }
+
+    return Subarray{left, right, maxLeftSum + maxRightSum - a[mid]};
+}
+
+Subarray findMaxSubarray(int a[], int low, int high) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+        Subarray crossingSubarray = findMaxCrossingSubarray(a, low, mid, high);
+        Subarray leftSubarray = findMaxSubarray(a, low, mid);
+        Subarray rightSubarray = findMaxSubarray(a, mid + 1, high);
+        if (leftSubarray.sum > rightSubarray.sum && leftSubarray.sum > crossingSubarray.sum) return leftSubarray;
+        else if (rightSubarray.sum > leftSubarray.sum && rightSubarray.sum > crossingSubarray.sum) return rightSubarray;
+        else return crossingSubarray;
+    } else {
+        return Subarray {low, high, a[low]};
+    }
+}
+
+int main() {
+    int a[] = {-4, 5, 10, -3, 2, 7, -11};
+    Subarray maxSubarray = findMaxSubarray(a, 0, 6);
+    printf("%d %d %d\n", maxSubarray.sum, maxSubarray.low, maxSubarray.high);
+    return 0;
+}
