@@ -1,0 +1,25 @@
+#include <iostream>
+
+using namespace std;
+
+void recursiveInsertionSort(int a[], int i) {
+    if (i > 0) {
+        recursiveInsertionSort(a, i - 1);
+        int key = a[i];
+        int n = i - 1;
+        while (n >= 0 && a[n] > key) {
+            a[n + 1] = a[n];
+            n--;
+        }
+        a[n + 1] = key;
+    }
+}
+
+int main() {
+    int a[] = {3, 2, 1, 5, 4, 6};
+    recursiveInsertionSort(a, 5);
+    for (int i: a) {
+        cout << i << " ";
+    }
+    return 0;
+}
